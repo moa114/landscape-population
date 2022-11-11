@@ -45,8 +45,7 @@ public class LandscapeHandler {
             if (l.getName().equals(name))
                 return l;
         }
-        System.out.println("invalid name");
-        return null;
+      return null;
     }
 
 }
