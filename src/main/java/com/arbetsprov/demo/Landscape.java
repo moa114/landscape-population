@@ -4,22 +4,21 @@ import javax.annotation.Nonnull;
 
 public class Landscape {
 
-
     private int population17;
     private int population18;
     private int population19;
     private final String name;
-    private int scb_index;
-    private double percentage_change_17_19;
+    private final int scbIndex;
+    private double percentageChange17to19;
 
-    public Landscape(@Nonnull String name, @Nonnull int index) {
+    public Landscape(@Nonnull String name, int index) {
         this.name = name;
-        this.scb_index=index;
+        this.scbIndex=index;
     }
 
-    public Integer getPopulation17() {
-        return population17;
-    }
+    public Integer getPopulation17() { return population17; }
+
+    public int getScbIndex() { return scbIndex;}
 
     public void setPopulation17(Integer population17) {
         this.population17 = population17;
@@ -41,15 +40,12 @@ public class Landscape {
         this.population19 = population19;
     }
 
-    public int getScb_index() {
-        return scb_index;
-    }
-    public double getPercentage_change_17_19() {
-        return percentage_change_17_19;
+    public double getPercentageChange17to19() {
+        return percentageChange17to19;
     }
 
-    public void setPercentage_change_17_19(double percentage_change_17_19) {
-        this.percentage_change_17_19 = percentage_change_17_19;
+    public void setPercentageChange17to19(double percentageChange17to19) {
+        this.percentageChange17to19 = percentageChange17to19;
     }
     @Nonnull
     public String getName() {

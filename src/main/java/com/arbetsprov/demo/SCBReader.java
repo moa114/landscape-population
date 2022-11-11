@@ -10,17 +10,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
+
 import java.util.List;
 
 
 public class SCBReader {
 
-    private static JSONObject json_population_statistic;
-    private static JSONObject json_landscape_codes;
-    private static final LandscapeHandler landscape_handler=LandscapeHandler.getInstance();
-    private static final DecimalFormat df = new DecimalFormat("0.00");
+    private static JSONObject jsonPopulationStatistic;
+    private static JSONObject jsonLandscapeCodes;
+    private static final LandscapeHandler landscapeHandler=LandscapeHandler.getInstance();
 
 
     protected static List<Landscape> getData() throws IOException {
@@ -89,26 +87,25 @@ public class SCBReader {
             os.write(input, 0, input.length);
         }
 
-        String population_statistic=read_request(con);
-        json_population_statistic=new JSONObject(population_statistic); // {"key":["101","2018"],"values":["1359800"]}
+        String populationStatistic=readRequest(con);
+        jsonPopulationStatistic=new JSONObject(populationStatistic); // {"key":["101","2018"],"values":["1359800"]}
 
 
         HttpsURLConnection con2 = (HttpsURLConnection) url.openConnection();
         con2.setRequestMethod("GET");
-        String landscape_codes=read_request(con2);
+        String landscapeCodes=readRequest(con2);
 
-        json_landscape_codes= new JSONObject(landscape_codes);
-        enter_landscapes();
+        jsonLandscapeCodes= new JSONObject(landscapeCodes);
+        enterLandscapes();
 
-        landscape_handler.calculatePercentageChange();
+        landscapeHandler.calculatePercentageChange();
 
-        return landscape_handler.getLandscapeList();
+        return landscapeHandler.getLandscapeList();
     }
 
 
-    private static String read_request(HttpsURLConnection con) throws IOException {
+    private static String readRequest(HttpsURLConnection con) throws IOException {
         String s;
-
         try(BufferedReader br = new BufferedReader(
                 new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
             StringBuilder response = new StringBuilder();
@@ -117,42 +114,41 @@ public class SCBReader {
                 response.append(responseLine.trim());
             }
             s = response.toString();
-
         }
     return s;
     }
 
-    private static void enter_landscapes() {
-        JSONArray landscapes= json_landscape_codes.getJSONArray("variables").getJSONObject(0).getJSONArray("valueTexts");
+    private static void enterLandscapes() {
+        JSONArray landscapes= jsonLandscapeCodes.getJSONArray("variables").getJSONObject(0).getJSONArray("valueTexts");
         for (int i = 5; i < landscapes.length(); i++) {
             if( String.valueOf(landscapes.get(i)).indexOf('(') ==-1 && !String.valueOf(landscapes.get(i)).contains("Unknown") ) {
-                int scb_index=retrieve_scb_index(i);
-                String landscape_name=String.valueOf(landscapes.get(i));
-                landscape_handler.createLandscape(landscape_name, scb_index);
-                enter_population_statistic(landscape_handler.getLandscape(landscape_name),scb_index);
+                int scbIndex=retrieveScbIndex(i);
+                String landscapeName=String.valueOf(landscapes.get(i));
+                landscapeHandler.createLandscape(landscapeName, scbIndex);
+                enterPopulationStatistic(landscapeHandler.getLandscape(landscapeName), scbIndex);
             }
         }
     }
 
-    private static int retrieve_scb_index( int index){
-        JSONArray landscape_index_scb= json_landscape_codes.getJSONArray("variables").getJSONObject(0).getJSONArray("values");
-        return Integer.parseInt((String)landscape_index_scb.get(index));
+    private static int retrieveScbIndex(int index){
+        JSONArray scbIndices= jsonLandscapeCodes.getJSONArray("variables").getJSONObject(0).getJSONArray("values");
+        return Integer.parseInt((String) scbIndices.get(index));
     }
 
-    private static void enter_population_statistic(Landscape landscape,int index){
-        JSONArray all_population_statistic= json_population_statistic.getJSONArray("data");
-        for(int i =0; i<all_population_statistic.length();i++){
-            JSONArray landscape_key= (JSONArray) json_population_statistic.getJSONArray("data").getJSONObject(i).get("key");
-            if(Integer.parseInt( (String) landscape_key.get(0))==index){
-                JSONArray landscape_value= (JSONArray) json_population_statistic.getJSONArray("data").getJSONObject(i).get("values");
-                if((landscape_key.get(1)).equals("2017")){
-                landscape.setPopulation17(Integer.parseInt((String) landscape_value.get(0)));
+    private static void enterPopulationStatistic(Landscape landscape, int index){
+        JSONArray allPopulationStatistic= jsonPopulationStatistic.getJSONArray("data");
+        for(int i =0; i<allPopulationStatistic.length();i++){
+            JSONArray landscapeKey= (JSONArray) jsonPopulationStatistic.getJSONArray("data").getJSONObject(i).get("key");
+            if(Integer.parseInt( (String) landscapeKey.get(0))==index){
+                JSONArray landscapeValue= (JSONArray) jsonPopulationStatistic.getJSONArray("data").getJSONObject(i).get("values");
+                if((landscapeKey.get(1)).equals("2017")){
+                landscape.setPopulation17(Integer.parseInt((String) landscapeValue.get(0)));
                 }
-                else if(landscape_key.get(1).equals("2018")) {
-                    landscape.setPopulation18(Integer.parseInt((String) landscape_value.get(0)));
+                else if(landscapeKey.get(1).equals("2018")) {
+                    landscape.setPopulation18(Integer.parseInt((String) landscapeValue.get(0)));
                 }
-                else if(landscape_key.get(1).equals("2019")) {
-                    landscape.setPopulation19(Integer.parseInt((String) landscape_value.get(0)));
+                else if(landscapeKey.get(1).equals("2019")) {
+                    landscape.setPopulation19(Integer.parseInt((String) landscapeValue.get(0)));
                 }
             }
         }

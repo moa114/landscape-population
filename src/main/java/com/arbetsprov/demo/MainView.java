@@ -33,7 +33,7 @@ public class MainView extends VerticalLayout {
         grid.addColumn(Landscape::getPopulation17).setHeader("Population 2017").setSortable(true);
         grid.addColumn(Landscape::getPopulation18).setHeader("Population 2018").setSortable(true);
         grid.addColumn(Landscape::getPopulation19).setHeader("Population 2019").setSortable(true);
-        grid.addColumn(Landscape::getPercentage_change_17_19).setHeader("Percentage change from 2017 - 2019").setSortable(false);
+        grid.addColumn(Landscape::getPercentageChange17to19).setHeader("Percentage change from 2017 - 2019").setSortable(false);
 
         List<Landscape> landscapeList = SCBReader.getData();
         grid.setItems(landscapeList);

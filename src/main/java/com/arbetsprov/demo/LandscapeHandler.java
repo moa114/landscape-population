@@ -22,7 +22,7 @@ public class LandscapeHandler {
         return singleInstance;
     }
 
-    public void createLandscape(String name, int scb_index) {
+    protected void createLandscape(String name, int scb_index) {
         Landscape landscape=new Landscape(name, scb_index);
         landscapeList.add(landscape);
     }
@@ -34,7 +34,7 @@ public class LandscapeHandler {
     protected void calculatePercentageChange(){
         for(Landscape l: landscapeList){
             double d= (double) l.getPopulation19()/l.getPopulation17();
-            l.setPercentage_change_17_19((double) Math.round(d*100)/100);
+            l.setPercentageChange17to19((double) Math.round(d*100)/100);
         }
     }
 
