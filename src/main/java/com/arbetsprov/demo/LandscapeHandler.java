@@ -23,8 +23,10 @@ public class LandscapeHandler {
     }
 
     protected void createLandscape(String name, int scb_index) {
-        Landscape landscape=new Landscape(name, scb_index);
-        landscapeList.add(landscape);
+        if(!landscapeList.contains(getLandscape(name))){
+            Landscape landscape=new Landscape(name, scb_index);
+            landscapeList.add(landscape);
+        }
     }
 
     public List<Landscape> getLandscapeList() {

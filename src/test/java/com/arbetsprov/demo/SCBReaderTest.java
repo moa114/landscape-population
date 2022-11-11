@@ -1,7 +1,9 @@
 package com.arbetsprov.demo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -12,26 +14,28 @@ import java.util.List;
 
 public class SCBReaderTest {
     List<Landscape> landscapeList;
-    List<String> landscapeNames;
     LandscapeHandler landscapeHandler;
 
     @Before
     public void before() throws IOException {
-        landscapeList=SCBReader.getData();
-        landscapeNames=new ArrayList<>();
+        SCBReader.getData();
         landscapeHandler=LandscapeHandler.getInstance();
-        for (Landscape l: landscapeList) {
-            landscapeNames.add(l.getName());
-        }
+        landscapeList=LandscapeHandler.getInstance().getLandscapeList();
     }
 
     @Test
     public void testRetrievesAllLandscapes() {
-        String[] all_landscape_name={"Lappland","Norrbotten","Västerbotten","Jämtland","Ångermanland","Härjedalen","Medelpad","Hälsingland","Gästrikland","Dalarna","Värmland"};        //should inlude all landscape names..
-        for(String s: all_landscape_name){
+        List<String> landscapeNames=new ArrayList<>();
+        for (Landscape l: landscapeList) {
+            landscapeNames.add(l.getName());
+        }
+
+        String[] allLandscapeNames={"Lappland","Norrbotten","Västerbotten","Jämtland","Ångermanland","Härjedalen","Medelpad","Hälsingland","Gästrikland","Dalarna","Värmland"};    //should inlude all landscape names..
+        for(String s: allLandscapeNames){
             assertTrue(landscapeNames.contains(s));
         }
-        assertEquals(landscapeList.size(),25);
+
+        assertEquals(25,landscapeList.size());
     }
 
     //should be tested more exhaustive
@@ -44,10 +48,8 @@ public class SCBReaderTest {
         Landscape gotland= landscapeHandler.getLandscape("Gotland");
         int gotlandPopulation18=gotland.getPopulation18();
 
-        assertEquals(norrbottenPopulation17,196012);
-        assertEquals(jamtlandPopulation19,117688);
-        assertEquals(gotlandPopulation18,59249);
-
-
+        assertEquals(196012, norrbottenPopulation17);
+        assertEquals(117688,jamtlandPopulation19);
+        assertEquals(59249,gotlandPopulation18);
     }
 }
