@@ -1,14 +1,13 @@
 package com.arbetsprov.demo;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,5 +50,25 @@ public class SCBReaderTest {
         assertEquals(196012, norrbottenPopulation17);
         assertEquals(117688,jamtlandPopulation19);
         assertEquals(59249,gotlandPopulation18);
+    }
+
+    /**
+     * Checks the division results in the same answer with two different methods for rounding
+     */
+    @Test
+    public void testCalculatePercentageChange(){
+        DecimalFormat f = new DecimalFormat("##.00");
+
+        for(Landscape l: landscapeList){
+            double d= (double) l.getPopulation19()/l.getPopulation17();
+            String landscapeHandlerCalculation= String.valueOf(l.getPercentageChange17to19());
+            String newLandscapeHandlerCalculation=landscapeHandlerCalculation.replace(".",",");
+            if(f.format(d).equals("1,00"))
+                assertEquals("1,0",newLandscapeHandlerCalculation);
+            else if(f.format(d).equals(",99"))
+                assertEquals("0,99",newLandscapeHandlerCalculation);
+            else
+            assertEquals(f.format(d),newLandscapeHandlerCalculation);
+        }
     }
 }
