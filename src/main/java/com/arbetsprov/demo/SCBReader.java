@@ -98,7 +98,7 @@ public class SCBReader {
         String landscape_codes=read_request(con2);
 
         json_landscape_codes= new JSONObject(landscape_codes);
-        create_landscape_objects();
+        enter_landscapes();
 
         landscape_handler.calculatePercentageChange();
 
@@ -110,7 +110,7 @@ public class SCBReader {
         String s;
 
         try(BufferedReader br = new BufferedReader(
-                new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
             StringBuilder response = new StringBuilder();
             String responseLine;
             while ((responseLine = br.readLine()) != null) {
@@ -122,20 +122,20 @@ public class SCBReader {
     return s;
     }
 
-    private static void create_landscape_objects() {
+    private static void enter_landscapes() {
         JSONArray landscapes= json_landscape_codes.getJSONArray("variables").getJSONObject(0).getJSONArray("valueTexts");
         for (int i = 5; i < landscapes.length(); i++) {
             if( String.valueOf(landscapes.get(i)).indexOf('(') ==-1 && !String.valueOf(landscapes.get(i)).contains("Unknown") ) {
                 int scb_index=retrieve_scb_index(i);
-                Landscape landscape=new Landscape(String.valueOf(landscapes.get(i)), scb_index);
-                landscape_handler.getLandscapeList().add(landscape);
-                enter_population_statistic(landscape,scb_index);
+                String landscape_name=String.valueOf(landscapes.get(i));
+                landscape_handler.createLandscape(landscape_name, scb_index);
+                enter_population_statistic(landscape_handler.getLandscape(landscape_name),scb_index);
             }
         }
     }
 
     private static int retrieve_scb_index( int index){
-        JSONArray landscape_index_scb= json_landscape_codes.getJSONArray("variables").getJSONObject(0).getJSONArray("values"); //funkar!!! alla index
+        JSONArray landscape_index_scb= json_landscape_codes.getJSONArray("variables").getJSONObject(0).getJSONArray("values");
         return Integer.parseInt((String)landscape_index_scb.get(index));
     }
 

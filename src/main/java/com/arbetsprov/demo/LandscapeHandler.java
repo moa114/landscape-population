@@ -22,6 +22,11 @@ public class LandscapeHandler {
         return singleInstance;
     }
 
+    public void createLandscape(String name, int scb_index) {
+        Landscape landscape=new Landscape(name, scb_index);
+        landscapeList.add(landscape);
+    }
+
     public List<Landscape> getLandscapeList() {
         return landscapeList;
     }
