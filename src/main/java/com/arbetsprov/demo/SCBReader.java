@@ -19,9 +19,8 @@ public class SCBReader {
 
     private static JSONObject json_population_statistic;
     private static JSONObject json_landscape_codes;
-    private static final List<Landscape> landscapeList= new ArrayList<>();
+    private static final LandscapeHandler landscape_handler=LandscapeHandler.getInstance();
     private static final DecimalFormat df = new DecimalFormat("0.00");
-
 
 
     protected static List<Landscape> getData() throws IOException {
@@ -101,9 +100,9 @@ public class SCBReader {
         json_landscape_codes= new JSONObject(landscape_codes);
         create_landscape_objects();
 
-        calculate_percentage_change();
+        landscape_handler.calculatePercentageChange();
 
-        return landscapeList;
+        return landscape_handler.getLandscapeList();
     }
 
 
@@ -129,7 +128,7 @@ public class SCBReader {
             if( String.valueOf(landscapes.get(i)).indexOf('(') ==-1 && !String.valueOf(landscapes.get(i)).contains("Unknown") ) {
                 int scb_index=retrieve_scb_index(i);
                 Landscape landscape=new Landscape(String.valueOf(landscapes.get(i)), scb_index);
-                landscapeList.add(landscape);
+                landscape_handler.getLandscapeList().add(landscape);
                 enter_population_statistic(landscape,scb_index);
             }
         }
@@ -156,13 +155,6 @@ public class SCBReader {
                     landscape.setPopulation19(Integer.parseInt((String) landscape_value.get(0)));
                 }
             }
-        }
-    }
-
-    private static void calculate_percentage_change(){
-        for(Landscape l: landscapeList){
-            double d= (double) l.getPopulation19()/l.getPopulation17();
-            l.setPercentage_change_17_19((double) Math.round(d*100)/100);
         }
     }
 
