@@ -1,9 +1,7 @@
 package com.arbetsprov.demo;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -15,12 +13,13 @@ import java.util.List;
 public class SCBReaderTest {
     List<Landscape> landscapeList;
     List<String> landscape_names;
+    LandscapeHandler landscapeHandler;
 
     @Before
     public void before() throws IOException {
         landscapeList=SCBReader.getData();
         landscape_names=new ArrayList<>();
-
+        landscapeHandler=LandscapeHandler.getInstance();
         for (Landscape l: landscapeList) {
             landscape_names.add(l.getName());
         }
@@ -35,8 +34,19 @@ public class SCBReaderTest {
         assertEquals(landscapeList.size(),25);
     }
 
+    //should be tested more exhaustive
     @Test
     public void test_adds_correct_population_data(){
+        Landscape norrbotten= landscapeHandler.getLandscape("Norrbotten");
+        int norrbottenPopulation17=norrbotten.getPopulation17();
+        Landscape jamtland= landscapeHandler.getLandscape("Jämtland");
+        int jamtlandPopulation19=jamtland.getPopulation19();
+        Landscape gotland= landscapeHandler.getLandscape("Gotland");
+        int gotlandPopulation18=gotland.getPopulation18();
+
+        assertEquals(norrbottenPopulation17,196012);
+        assertEquals(jamtlandPopulation19,117688);
+        assertEquals(gotlandPopulation18,59249);
 
 
     }
