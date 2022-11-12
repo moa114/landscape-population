@@ -3,13 +3,12 @@ package com.arbetsprov.demo;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class SCBReaderTest {
     List<Landscape> landscapeList;
@@ -70,5 +69,17 @@ public class SCBReaderTest {
             else
             assertEquals(f.format(d),newLandscapeHandlerCalculation);
         }
+    }
+
+    @Test
+    public void testCalculatePercentageChangeWithBadData(){
+        Landscape skane= landscapeHandler.getLandscape("Skåne");
+        skane.setPopulation17(0);
+        assertNull(skane.getPercentageChange17to19());
+
+        skane.setPopulation17(10000);
+        String skanePercentageChange= String.valueOf(skane.getPercentageChange17to19());
+        assertEquals("137.53",skanePercentageChange);
+
     }
 }

@@ -3,6 +3,9 @@ package com.arbetsprov.demo;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class for managing the landscapes. Has a list of all landscapes.
+ */
 public class LandscapeHandler {
     private static LandscapeHandler singleInstance;
     private final List<Landscape> landscapeList;
@@ -33,13 +36,11 @@ public class LandscapeHandler {
         return landscapeList;
     }
 
-    protected void calculatePercentageChange(){
-        for(Landscape l: landscapeList){
-            double d= (double) l.getPopulation19()/l.getPopulation17();
-            l.setPercentageChange17to19((double) Math.round(d*100)/100);
-        }
-    }
-
+    /**
+     * Gives the landscape object with a certain name
+     * @param name the name of the desired landscape
+     * @return landscape object if one exists with the corresponding name, otherwise null
+     */
     public Landscape getLandscape(String name) {
         for (Landscape l : landscapeList) {
             if (l.getName().equals(name))

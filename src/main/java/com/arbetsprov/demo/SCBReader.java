@@ -98,8 +98,6 @@ public class SCBReader {
         jsonLandscapeCodes= new JSONObject(landscapeCodes);
         enterLandscapes();
 
-        landscapeHandler.calculatePercentageChange();
-
         return landscapeHandler.getLandscapeList();
     }
 
