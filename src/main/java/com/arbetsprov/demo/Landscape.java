@@ -3,28 +3,28 @@ package com.arbetsprov.demo;
 import javax.annotation.Nonnull;
 
 /**
- * Represents a landscape with a name, an index in the SCB database, and population statistics for year 2017,2018 and 2019.
+ * Represents a landscape with a name, an ID number in the SCB database, and population statistics for year 2017,2018 and 2019.
  * It also has a derived percentage change from year 2017 to 2019.
  * Used by LandscapeHandler
  */
 public class Landscape {
 
     private final String name;
-    private final int scbIndex;
+    private final int scbID;
     //the below variables are non-primitive since I want them to be able to be null and not 0 when empty, since 0 has another meaning in the data
     private Integer population17;
     private Integer population18;
     private Integer population19;
     private Double percentageChange17to19;
 
-    public Landscape(@Nonnull String name, int index) {
+    public Landscape(@Nonnull String name, int scbID) {
         this.name = name;
-        this.scbIndex=index;
+        this.scbID=scbID;
     }
 
     public Integer getPopulation17() { return population17; }
 
-    public int getScbIndex() { return scbIndex;}
+    public int getScbId() { return scbID;}
 
     public void setPopulation17(Integer population17) {
         this.population17 = population17;

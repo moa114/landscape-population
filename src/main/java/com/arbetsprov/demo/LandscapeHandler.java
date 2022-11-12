@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class for managing the landscapes. Has a list of all landscapes.
+ * Managing the landscapes. Has a list of all landscapes.
+ * Used by SCBReader
  */
 public class LandscapeHandler {
     private static LandscapeHandler singleInstance;

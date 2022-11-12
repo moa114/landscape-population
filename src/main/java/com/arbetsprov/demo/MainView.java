@@ -7,7 +7,10 @@ import com.vaadin.flow.router.Route;
 import java.io.IOException;
 
 import java.util.List;
-
+/**
+ * Generates the gui.
+ * Uses SCBReader to get the landscape data to display
+ */
 @Route("")
 @CssImport(
         value = "grid-style.css",
@@ -29,9 +32,8 @@ public class MainView extends VerticalLayout {
         grid.setClassName("styled");
         List<Landscape> landscapeList = SCBReader.getData();
         grid.setItems(landscapeList);
-        grid.setWidth("80%");
+        grid.setWidth("100%");
         grid.setHeight("600px");
-
         add(grid);
     }
 
