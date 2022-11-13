@@ -15,15 +15,16 @@ import java.util.List;
 
 /**
  * Reads information from the SCB database and enters it to this application.
- * Has one JSONObject with the population statistic for every year mapped to landscape through a unique ID for every landscape.
+ * Has one JSONArray with the population statistic for every year mapped to unique ID for every landscape.
  * To map which landscape name belongs to which ID, it also retrieves a JSONObject jsonLandscapeCodes with both ID's and landscape names
  * Used by MainView
  */
 public class SCBReader {
 
-    private static JSONObject jsonPopulationStatistic;
+    private static JSONArray allPopulationStatistic;
     private static JSONObject jsonLandscapeCodes;
     private static final LandscapeHandler landscapeHandler=LandscapeHandler.getInstance();
+
 
     /**
      * gets data from scb through HTTPs Requests.
@@ -97,8 +98,8 @@ public class SCBReader {
         }
 
         String populationStatistic=readRequest(con);
-        jsonPopulationStatistic=new JSONObject(populationStatistic); // {"key":["101","2018"],"values":["1359800"]}
-
+        JSONObject jsonPopulationStatistic=new JSONObject(populationStatistic);
+        allPopulationStatistic= jsonPopulationStatistic.getJSONArray("data"); // {"key":["101","2018"],"values":["1359800"]}
 
         HttpsURLConnection con2 = (HttpsURLConnection) url.openConnection();
         con2.setRequestMethod("GET");
@@ -110,9 +111,13 @@ public class SCBReader {
         return landscapeHandler.getLandscapeList();
     }
 
-
+    /**
+     * makes a request to scb
+     * @param con the https url connection to specified URL
+     * @return the response (data) as a string
+     */
     private static String readRequest(HttpsURLConnection con) throws IOException {
-        String s;
+        String data;
         try(BufferedReader br = new BufferedReader(
                 new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
             StringBuilder response = new StringBuilder();
@@ -120,9 +125,9 @@ public class SCBReader {
             while ((responseLine = br.readLine()) != null) {
                 response.append(responseLine.trim());
             }
-            s = response.toString();
+            data = response.toString();
         }
-    return s;
+    return data;
     }
 
     /**
@@ -136,7 +141,7 @@ public class SCBReader {
                 int scbID=retrieveScbID(i);
                 String landscapeName=String.valueOf(landscapes.get(i));
                 landscapeHandler.createLandscape(landscapeName, scbID);
-                enterPopulationStatistic(landscapeHandler.getLandscape(landscapeName));
+                landscapeHandler.enterPopulationStatistic(landscapeHandler.getLandscape(landscapeName),allPopulationStatistic);
             }
         }
     }
@@ -146,28 +151,6 @@ public class SCBReader {
         return Integer.parseInt((String) scbIDs.get(index));
     }
 
-    /**
-     * enter population statistic for year 2017, 2018 and 2019 for a landscape
-     * @param landscape the landscape to enter statistic for
-     */
-    private static void enterPopulationStatistic(Landscape landscape){
-        JSONArray allPopulationStatistic= jsonPopulationStatistic.getJSONArray("data");
-        for(int i =0; i<allPopulationStatistic.length();i++){
-            JSONArray landscapeKey= (JSONArray) jsonPopulationStatistic.getJSONArray("data").getJSONObject(i).get("key");
-            if(Integer.parseInt( (String) landscapeKey.get(0))==landscape.getScbId()){
-                JSONArray landscapeValue= (JSONArray) jsonPopulationStatistic.getJSONArray("data").getJSONObject(i).get("values");
-                if((landscapeKey.get(1)).equals("2017")){
-                landscape.setPopulation17(Integer.parseInt((String) landscapeValue.get(0)));
-                }
-                else if(landscapeKey.get(1).equals("2018")) {
-                    landscape.setPopulation18(Integer.parseInt((String) landscapeValue.get(0)));
-                }
-                else if(landscapeKey.get(1).equals("2019")) {
-                    landscape.setPopulation19(Integer.parseInt((String) landscapeValue.get(0)));
-                }
-            }
-        }
-    }
 
 
 }

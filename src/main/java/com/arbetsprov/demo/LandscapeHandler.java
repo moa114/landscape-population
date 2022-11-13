@@ -1,5 +1,7 @@
 package com.arbetsprov.demo;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,29 @@ public class LandscapeHandler {
                 return l;
         }
       return null;
+    }
+
+    /**
+     * enter population statistic for year 2017, 2018 and 2019 for a landscape
+     * @param landscape the landscape to enter statistic for
+     */
+    protected void enterPopulationStatistic(Landscape landscape, JSONArray allPopulationStatistic ){
+        for(int i =0; i<allPopulationStatistic.length();i++){
+            JSONArray landscapeKey= (JSONArray) allPopulationStatistic.getJSONObject(i).get("key");
+            if(Integer.parseInt( (String) landscapeKey.get(0))==landscape.getScbId()){
+                JSONArray landscapeValue= (JSONArray) allPopulationStatistic.getJSONObject(i).get("values");
+                if((landscapeKey.get(1)).equals("2017")){
+                    landscape.setPopulation17(Integer.parseInt((String) landscapeValue.get(0)));
+                }
+                else if(landscapeKey.get(1).equals("2018")) {
+                    landscape.setPopulation18(Integer.parseInt((String) landscapeValue.get(0)));
+                }
+                else if(landscapeKey.get(1).equals("2019")) {
+                    landscape.setPopulation19(Integer.parseInt((String) landscapeValue.get(0)));
+                    return;
+                }
+            }
+        }
     }
 
 }
