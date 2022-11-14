@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +59,9 @@ public class SCBReaderTest {
         skane.setPopulation17(10000);
         String skanePercentageChange= String.valueOf(skane.getPercentageChange17to19());
         assertEquals("13652.78",skanePercentageChange);
+
+        skane.setPopulation17(null);
+        assertNull(skane.getPercentageChange17to19());
 
     }
 }
