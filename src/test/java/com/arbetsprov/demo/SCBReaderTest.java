@@ -51,35 +51,15 @@ public class SCBReaderTest {
         assertEquals(59249,gotlandPopulation18);
     }
 
-    /**
-     * Checks the division results in the same answer with two different methods for rounding
-     */
     @Test
     public void testCalculatePercentageChange(){
-        DecimalFormat f = new DecimalFormat("##.00");
-
-        for(Landscape l: landscapeList){
-            double d= (double) l.getPopulation19()/l.getPopulation17();
-            String landscapeHandlerCalculation= String.valueOf(l.getPercentageChange17to19());
-            String newLandscapeHandlerCalculation=landscapeHandlerCalculation.replace(".",",");
-            if(f.format(d).equals("1,00"))
-                assertEquals("1,0",newLandscapeHandlerCalculation);
-            else if(f.format(d).equals(",99"))
-                assertEquals("0,99",newLandscapeHandlerCalculation);
-            else
-            assertEquals(f.format(d),newLandscapeHandlerCalculation);
-        }
-    }
-
-    @Test
-    public void testCalculatePercentageChangeWithBadData(){
         Landscape skane= landscapeHandler.getLandscape("Skåne");
         skane.setPopulation17(0);
         assertNull(skane.getPercentageChange17to19());
 
         skane.setPopulation17(10000);
         String skanePercentageChange= String.valueOf(skane.getPercentageChange17to19());
-        assertEquals("137.53",skanePercentageChange);
+        assertEquals("13652.78",skanePercentageChange);
 
     }
 }

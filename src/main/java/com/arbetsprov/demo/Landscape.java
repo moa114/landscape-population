@@ -1,6 +1,7 @@
 package com.arbetsprov.demo;
 
 import javax.annotation.Nonnull;
+import java.text.DecimalFormat;
 
 /**
  * Represents a landscape with a name, an ID number in the SCB database, and population statistics for year 2017,2018 and 2019.
@@ -59,7 +60,7 @@ public class Landscape {
     public void setPercentageChange17to19() {
         if(population17 != null && population19 !=null && population17!=0) {
             double d = (double) population19/ population17;
-            percentageChange17to19 = (double) Math.round(d * 100) / 100;
+            percentageChange17to19 = (double) Math.round((d-1)*100 * 1000) / 1000;
         }
         else {
             percentageChange17to19 = null;
