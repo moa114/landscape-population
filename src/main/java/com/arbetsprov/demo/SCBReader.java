@@ -111,6 +111,10 @@ public class SCBReader {
         return landscapeHandler.getLandscapeList();
     }
 
+    public static JSONArray getAllPopulationStatistic(){
+        return allPopulationStatistic;
+    }
+
     /**
      * makes a request to scb
      * @param con the https url connection to specified URL
