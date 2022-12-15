@@ -1,4 +1,4 @@
-# arbetsprov-DirSys
+# Landscape population viewer
 An application for displaying landscapes and their population data by year 2017-2019
 
 Built with the frameworks Vaadin and Springboot 
