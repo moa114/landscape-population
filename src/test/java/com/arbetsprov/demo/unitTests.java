@@ -23,7 +23,7 @@ public class unitTests {
         LandscapeHandler landscapeHandler = LandscapeHandler.getInstance();
         landscapeHandler.createLandscape("Hittapå", 2000);
 
-        String populatondata= Files.readString(Path.of("C:/Users/moabe/arbetsprov/demo/src/test/java/com/arbetsprov/demo/dummydata.txt"));
+        String populatondata= Files.readString(Path.of("src/test/java/com/arbetsprov/demo/dummydata.txt"));
         landscapeHandler.enterPopulationStatistic(landscapeHandler.getLandscape("Hittapå"),new JSONArray(populatondata));
         int pop=landscapeHandler.getLandscape("Hittapå").getPopulation17();
         Assert.assertEquals(pop,1342388);
