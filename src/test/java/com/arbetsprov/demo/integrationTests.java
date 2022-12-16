@@ -11,17 +11,16 @@ import org.json.JSONArray;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 
+import java.net.URL;
 import java.util.Set;
 
 
 public class integrationTests {
 
-    //kolla json scheduele //priority 2
-    // connection om den failar om man skickar in fel adress?   //priority 1
-    //
-    @Test
+    @Test(priority = 2)
     public void jsonFormatTest() throws IOException {
         SCBReader.getData();
         String validationmsg="There is validation errors";
@@ -56,13 +55,21 @@ public class integrationTests {
         file.write(allPopulationStatistic.toString(4));
         try {
             FileWriter fw = new FileWriter("src/test/java/com/arbetsprov/demo/newfile.json",true); //the true will append the new data
-            fw.write("]}]");//appends the string to the file
+            fw.write("]}]");
             fw.close();
         }
         catch(IOException ioe)
         {
             System.err.println("IOException: " + ioe.getMessage());
         }
+    }
+
+    @Test(priority = 1)
+    void testURLConnection() throws Exception {
+        URL url = new URL("https://api.scb.se/OV0104/v1/doris/en/ssd/START/BE/BE0101/BE0101A/FolkmangdDistrikt");
+        HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+        con.connect();
+        Assert.assertEquals(HttpsURLConnection.HTTP_OK, con.getResponseCode());
     }
 
 }
