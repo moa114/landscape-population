@@ -9,6 +9,9 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * This is the old test suite (created before enrolling DAT321)
+ */
 public class SCBReaderTest {
     List<Landscape> landscapeList;
     LandscapeHandler landscapeHandler;

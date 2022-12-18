@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/moabe/arbetsprov/demo">
+        <classes>
+            <class name="com.arbetsprov.demo.DemoApplicationTests">
+                <methods>
+                    <include name="contextLoads"/>
+                </methods>
+            </class>
+            <class name="com.arbetsprov.demo.unitTests">
+                <methods>
+                    <include name="testCreateLandscape"/>
+                    <include name="testGetLandscape"/>
+                    <include name="testCorrectPopulationData"/>
+                </methods>
+            </class>
+            <class name="com.arbetsprov.demo.integrationTests">
+                <methods>
+                    <include name="jsonFormatTest"/>
+                    <include name="testURLConnection"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
