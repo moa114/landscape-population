@@ -31,7 +31,7 @@ public class unitTests {
 
     }
 
-    @Test (priority = -2,groups = {"group2"} )
+    @Test (priority = -1,groups = {"group2"} )
     void testGetLandscape() {
         LandscapeHandler landscapeHandler = LandscapeHandler.getInstance();
         landscapeHandler.createLandscape("Hittapå", 2000);
